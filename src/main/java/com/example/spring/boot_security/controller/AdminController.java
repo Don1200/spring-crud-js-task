@@ -46,7 +46,7 @@ public class AdminController {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public User editUser(@RequestBody User user) {
         Set<Role> rolesSet = new HashSet<>();
         for (Role role : user.getRoles()) {

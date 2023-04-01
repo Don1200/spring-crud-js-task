@@ -77,8 +77,8 @@ function getRoleByUser(user) {
 function getRolesEdit() {
     var select = document.getElementById("listRole");
     $.get("/admin/roles", function (roles) {
-        for (let i = 0; i < roles.length; i++){
-          var option =  "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role +"</option>";
+        for (let i = 0; i < roles.length; i++) {
+            var option = "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role + "</option>";
             select.insertAdjacentHTML('afterBegin', option);
         }
     });
@@ -88,8 +88,8 @@ function getRolesEdit() {
 function getRolesAdd() {
     var select = document.getElementById("listRoles");
     $.get("/admin/roles", function (roles) {
-        for (let i = 0; i < roles.length; i++){
-            var option =  "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role +"</option>";
+        for (let i = 0; i < roles.length; i++) {
+            var option = "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role + "</option>";
             select.insertAdjacentHTML('afterBegin', option);
         }
     });
@@ -98,13 +98,12 @@ function getRolesAdd() {
 function getRolesDelete() {
     var select = document.getElementById("list");
     $.get("/admin/roles", function (roles) {
-        for (let i = 0; i < roles.length; i++){
-            var option =  "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role +"</option>";
+        for (let i = 0; i < roles.length; i++) {
+            var option = "<option id='" + roles[i].id + "' value='" + roles[i].role + "'>" + roles[i].role + "</option>";
             select.insertAdjacentHTML('afterBegin', option);
         }
     });
 }
-
 
 
 function findUser(userId) {
@@ -119,6 +118,7 @@ function findUser(userId) {
             getRolesEdit();
         });
 }
+
 function findUserToDelete(userId) {
     $.get("/admin/user",
         {id: userId},
@@ -133,27 +133,37 @@ function findUserToDelete(userId) {
 }
 
 function addUser() {
-var role = getSelectAdd();
-
-
-   var user = {
+    var role = getSelectAdd();
+    var user = {
         firstName: $("#firstNameAdd").val(),
-       lastName: $("#lastNameAdd").val(),
+        lastName: $("#lastNameAdd").val(),
         age: $("#ageAdd").val(),
         email: $("#emailAdd").val(),
         password: $("#passwordAdd").val(),
-        roles:role
+        roles: role
     }
 
     $.ajax({
         url: "/admin/add",
         type: "POST",
         contentType: "application/json",
-        data:JSON.stringify(user),
-            success: function () {
-                document.location.reload();
-            }
-        });
+        data: JSON.stringify(user),
+        success: function () {
+            var str = "<tr id='tr" + user.id + "'>" +
+                "<td>" + user.id + "</td>" +
+                "<td>" + user.firstName + "</td>" +
+                "<td>" + user.lastName + "</td>" +
+                "<td>" + user.age + "</td>" +
+                "<td>" + user.email + "</td>" +
+                "<td>" + user.roles + "</td>" +
+                "<td>" + "<a type= 'button' class='btn btn-info'  href= '#' data-toggle = 'modal' " +
+                "data-target='#editUser' onclick='findUser(" + user.id + ")'>Edit</a>" + "</td>" +
+                "<td>" + "<a class='btn btn-danger' href= '#' data-toggle = 'modal' " +
+                "data-target='#deleteUser' onclick='findUserToDelete(" + user.id + ")'>Delete</a>" + "</td>" +
+                "</tr>"
+            $('#tr' + user.id).replaceWith(str)
+        }
+    });
 }
 
 
@@ -181,9 +191,9 @@ function editUser() {
     }
     $.ajax({
         url: "/admin/edit",
-        type: "POST",
+        method: "PUT",
         contentType: "application/json",
-        data:JSON.stringify(user),
+        data: JSON.stringify(user),
 
         success: function () {
             var str = "<tr id='tr" + user.id + "'>" +
@@ -207,9 +217,9 @@ function getSelectAdd() {
     var select = document.getElementById("listRoles");
 
     var options = select.getElementsByTagName('option'),
-        values  = [];
+        values = [];
 
-    for (let i=options.length; i--;) {
+    for (let i = options.length; i--;) {
         if (options[i].selected) values.push(options[i].value)
     }
     return values;
@@ -219,9 +229,9 @@ function getSelectEdit() {
     var select = document.getElementById("listRole");
 
     var options = select.getElementsByTagName('option'),
-        values  = [];
+        values = [];
 
-    for (let i=options.length; i--;) {
+    for (let i = options.length; i--;) {
         if (options[i].selected) values.push(options[i].value)
     }
     return values;
@@ -229,8 +239,8 @@ function getSelectEdit() {
 
 function loadUser(email) {
     $.get("/admin/user-info",
-        {email:email},
-        function (user){
+        {email: email},
+        function (user) {
             var table = document.getElementById("userTable");
             var tr = document.createElement('tr');
             var tdId = document.createElement('td');
