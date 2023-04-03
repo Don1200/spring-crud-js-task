@@ -19,15 +19,13 @@ public class UserServiceImpl implements UserService  {
     @Override
     @Transactional
     public User addUser(User user) {
-        String newPass = passwordEncoder.encode(user.getPassword());
-        user.setPassword(newPass);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
     @Override
     @Transactional
     public User editUser(User user) {
-        String newPass = passwordEncoder.encode(user.getPassword());
-        user.setPassword(newPass);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
     @Override
